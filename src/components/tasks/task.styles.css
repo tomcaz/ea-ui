@@ -1,0 +1,14 @@
+.hightlighted {
+    background-color: yellow;
+}
+.task {
+    margin-top: 8px;
+    line-height: 30px;
+}
+.task:not(:last-child) {
+    border-bottom: 1px solid lightgray;
+}.tasks {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 16px 8px;
+}
