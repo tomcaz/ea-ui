@@ -4,18 +4,24 @@ import { NavComponent } from './components/nav/nav.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { useEffect, useState } from 'react';
 import { MainLayout } from './layouts/main.layout';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
-
+const DATA_URL = 'http://localhost:4000/api/tasks'
 
 function App() {
   const [visible, setVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [tasks, setTasks] = useState([])
   
+  useEffect(()=> { // constructor
+    axios.get(DATA_URL).then(data=> {
+      console.log(data)
+    }).catch(console.error)
+  }, [])
+
   const handleTaskStateChange = (id) => {
     let task = tasks.filter(task => task.id === id)[0];
-    task.checked = !task.checked;
+    task.selected = !task.selected;
     setTasks([
       ...tasks.filter(task=> task.id !== id),
       task
@@ -31,9 +37,8 @@ function App() {
     setTasks([
       ...tasks,
       {
-        id: uuidv4(),
         text,
-        checked: false,
+        selected: false,
         hightlighted: text.indexOf(searchText) >=0 && searchText.length > 0
       }
     ])
