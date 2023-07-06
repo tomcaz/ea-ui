@@ -6,3 +6,5 @@ Start Application by ```npm start```, application can be run from the browser wi
 
 # How to Test
 Run ```npm test```
+# sync every 1 sec
+try with two browser and check

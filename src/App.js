@@ -12,16 +12,26 @@ function App() {
   const [visible, setVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [tasks, setTasks] = useState([])
-  
-  useEffect(()=> { // constructor
+
+  const reloadData = () => {
     axios.get(DATA_URL).then(data=> {
       setTasks(data.data)
     }).catch(console.error)
+  }
+
+  useEffect(()=> { // constructor
+    const interval = setInterval(() => {
+      reloadData();
+    }, 1000);
+    return () => clearInterval(interval);
   }, [])
 
   const handleTaskStateChange = (id) => {
     let task = tasks.filter(task => task.id === id)[0];
     task.selected = !task.selected;
+    
+    axios.patch(`${DATA_URL}/${id}`, {selected: task.selected}).then().catch(console.error)
+
     setTasks([
       ...tasks.filter(task=> task.id !== id),
       task
@@ -34,18 +44,26 @@ function App() {
   }
 
   const handleAdd = (text) => {
-    setTasks([
-      ...tasks,
-      {
-        text,
-        selected: false,
-        hightlighted: text.indexOf(searchText) >=0 && searchText.length > 0
-      }
-    ])
+    axios.post(DATA_URL, {
+      text,
+      selected: false
+    }).then(data=> {
+      setTasks([
+        ...tasks,
+        {
+          id:data.data,
+          text,
+          selected: false,
+          hightlighted: text.indexOf(searchText) >=0 && searchText.length > 0
+        }
+      ])
+    }).catch(console.error)
   }
 
   const handleOk = () => {
-    setTasks([])
+    axios.delete(DATA_URL).then(()=> {
+      setTasks([])
+    }).catch(console.error)
   }
 
   const checkHightlight = () => {
