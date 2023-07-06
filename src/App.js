@@ -12,11 +12,28 @@ function App() {
   const [visible, setVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [tasks, setTasks] = useState([])
+  const [dragId, setDragId] = useState()
 
   const reloadData = () => {
     axios.get(DATA_URL).then(data=> {
-      setTasks(data.data)
+      
+      if (searchText.length > 0) {
+        setTasks([
+          ...data.data.map(item=>({
+            ...item,
+            hightlighted: item.text.indexOf(searchText) >=0
+          }))
+        ])
+      } else {
+        setTasks(data.data)
+      }
     }).catch(console.error)
+  }
+
+  const handleDrop = () => {
+    if(dragId) {
+      handleTaskStateChange(dragId)
+    }
   }
 
   useEffect(()=> { // constructor
@@ -93,7 +110,12 @@ function App() {
       visible={visible}
       setVisible={setVisible}
      />
-     <MainLayout tasks={tasks} handleTaskStateChange={handleTaskStateChange} handleAdd={handleAdd} handleSearch={handleSearch} />
+     <MainLayout tasks={tasks} 
+      handleTaskStateChange={handleTaskStateChange} 
+      handleAdd={handleAdd} 
+      handleSearch={handleSearch} 
+      setDragId={setDragId} 
+      handleDrop={handleDrop} />
     </div>
   );
 }

@@ -1,14 +1,22 @@
 .hightlighted {
-    background-color: yellow;
+    border-radius: 5px;
+    background-color: #EFCB68;
 }
 .task {
     margin-top: 8px;
-    line-height: 30px;
+    padding: 8px 46px;
 }
 .task:not(:last-child) {
     border-bottom: 1px solid lightgray;
-}.tasks {
+}
+.tasks {
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 16px 8px;
+    background-color: white;
+}
+.dropHolder.dragging {
+    background-color: #AEB7B3;
+}.dropHolder {
+    min-height: 40px;
 }
