@@ -15,7 +15,7 @@ function App() {
   
   useEffect(()=> { // constructor
     axios.get(DATA_URL).then(data=> {
-      console.log(data)
+      setTasks(data.data)
     }).catch(console.error)
   }, [])
 

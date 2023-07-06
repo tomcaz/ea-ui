@@ -6,7 +6,7 @@ export const TaskComponent = ({id, text, handleClick, selected, hightlighted}) =
             type={'checkbox'}
             id={id}
             label={text}
-            selected={selected}
+            checked={selected}
             onChange={()=>handleClick(id)}
             data-testid="taskId"
           />
